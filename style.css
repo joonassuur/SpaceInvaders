@@ -1,0 +1,11 @@
+body {
+    margin: 0;
+}
+
+.wrapper {
+    width: 900px;
+    height: 600px;
+    background: #ccc;
+    margin: 0 auto;
+    margin-top: 50px;
+}
