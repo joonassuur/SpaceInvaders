@@ -177,8 +177,8 @@ function animate() {
     }
     ctx.font = "14px Arial";
     ctx.fillStyle = "#000";
-    ctx.fillText("Space: shoot",10,500);
-    ctx.fillText("Arrow left and arrow right: move",10,520);
+    ctx.fillText("Space: shoot",10,570);
+    ctx.fillText("Arrow left and arrow right: move",10,590);
 
 }animate();
 
