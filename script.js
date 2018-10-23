@@ -5,6 +5,8 @@ var wrapper = document.querySelector(".wrapper");
     c.width = wrapper.offsetWidth-5;
 var ctx = c.getContext("2d");
 
+//canvas text
+
 
 var alienProjectileCombArr = [[],[]];
 var playerPos = 400;
@@ -173,7 +175,10 @@ function animate() {
             }
         }
     }
-
+    ctx.font = "14px Arial";
+    ctx.fillStyle = "#000";
+    ctx.fillText("Space: shoot",10,500);
+    ctx.fillText("Arrow left and arrow right: move",10,520);
 
 }animate();
 
