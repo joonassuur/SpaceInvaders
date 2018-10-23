@@ -5,17 +5,16 @@ var wrapper = document.querySelector(".wrapper");
     c.width = wrapper.offsetWidth-5;
 var ctx = c.getContext("2d");
 
-var alienArr = [];
-var projectileArr = [];
+
+var alienProjectileCombArr = [[],[]];
 var playerPos = 400;
-const projectileInitialPos = 495;
+const projectileInitialPosY = 495;
 var lastPress = 0;
 var pressedKey = {
     left:false,
     right:false,
     spacebar: false
 }
-
 
 let Objects = {
     /* draw the player */
@@ -51,8 +50,8 @@ let Objects = {
                 return;
             } else {
                 let x = playerPos;
-                let y = projectileInitialPos;
-                projectileArr.push(new Objects.Projectile(x, y))
+                let y = projectileInitialPosY;
+                alienProjectileCombArr[1].push(new Objects.Projectile(x, y))
             }
             lastPress = now;
         } else {
@@ -76,19 +75,33 @@ let Objects = {
             this.y += this.dy;
             this.drawAlien();
         }
-    }
+    },
+    Asd: function(x) {
+        this.x = x;
+        this.logFunc = function() {
+            console.log(this.x)
+        }
 
+    }
 }
 
 //add aliens to the array and draw aliens in rows
 //row 1
 for (let i = 20; i < c.offsetWidth; i += 50) {
-    alienArr.push(new Objects.Alien(i, 10, 0.1, "#000"));
+    alienProjectileCombArr[0].push(new Objects.Alien(i, -40, 0.1, "#000"));
+}
+for (let i = 45; i < c.offsetWidth; i += 50) {
+    alienProjectileCombArr[0].push(new Objects.Alien(i, -15, 0.1, "#000"));
 }
 //row 2
-for (let i = 45; i < c.offsetWidth; i += 50) {
-    alienArr.push(new Objects.Alien(i, 35, 0.1, "#000"));
+for (let i = 20; i < c.offsetWidth; i += 50) {
+    alienProjectileCombArr[0].push(new Objects.Alien(i, 10, 0.1, "#000"));
 }
+//row 3
+for (let i = 45; i < c.offsetWidth; i += 50) {
+    alienProjectileCombArr[0].push(new Objects.Alien(i, 35, 0.1, "#000"));
+}
+
 
 
 /* keypress events */
@@ -124,21 +137,43 @@ document.onkeyup = function(e) {
 
 
 
-
-
-
-
 /* animation */
 function animate() {
     requestAnimationFrame(animate);
     ctx.clearRect(0, 0, innerWidth, innerHeight);
     Objects.player();  
     Objects.shootProjectiles(); 
-    for (let i = 0; i<projectileArr.length; i++) {
-        projectileArr[i].updateProjectile();
+    for (let i = 0; i<alienProjectileCombArr[1].length; i++) {
+        alienProjectileCombArr[1][i].updateProjectile();
     }
-    for (let i = 0; i<alienArr.length; i++) {
-        alienArr[i].updateAlien();
+    for (let i = 0; i<alienProjectileCombArr[0].length; i++) {
+        alienProjectileCombArr[0][i].updateAlien();
+
     }
+    //remove projectile from array if it goes off screen
+    for (let i=0; i<alienProjectileCombArr[1].length; i++) {
+        if (alienProjectileCombArr[1][i].y < 0) {
+            alienProjectileCombArr[1].splice(i, 1);
+        }
+    }
+
+    // i = projectile, j = alien
+    for (let i = 0; i < alienProjectileCombArr[1].length;i++) {
+        if(alienProjectileCombArr[1][i] != undefined) {
+            for (let j = 0; j<alienProjectileCombArr[0].length;j++) {
+
+
+                if(Math.floor(alienProjectileCombArr[0][j].y) >= Math.floor(alienProjectileCombArr[1][i].y - 30)) {
+                    if(Math.floor(alienProjectileCombArr[0][j].x) <= Math.floor(alienProjectileCombArr[1][i].x + 10) && Math.floor(alienProjectileCombArr[0][j].x) >= Math.floor(alienProjectileCombArr[1][i].x - 10) ) {
+                        alienProjectileCombArr[0].splice(j, 1);
+                    }  
+                }  
+
+
+            }
+        }
+    }
+
+
 }animate();
 
