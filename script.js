@@ -5,9 +5,6 @@ var wrapper = document.querySelector(".wrapper");
     c.width = wrapper.offsetWidth-5;
 var ctx = c.getContext("2d");
 
-//canvas text
-
-
 var alienProjectileCombArr = [[],[]];
 var playerPos = 400;
 const projectileInitialPosY = 495;
@@ -19,6 +16,7 @@ var pressedKey = {
 }
 
 let Objects = {
+    
     /* draw the player */
     player: function() {
         if (pressedKey.right == true) {
@@ -77,13 +75,6 @@ let Objects = {
             this.y += this.dy;
             this.drawAlien();
         }
-    },
-    Asd: function(x) {
-        this.x = x;
-        this.logFunc = function() {
-            console.log(this.x)
-        }
-
     }
 }
 
@@ -152,7 +143,7 @@ function animate() {
         alienProjectileCombArr[0][i].updateAlien();
 
     }
-    //remove projectile from array if it goes off screen
+    //remove projectile from array if they go off screen
     for (let i=0; i<alienProjectileCombArr[1].length; i++) {
         if (alienProjectileCombArr[1][i].y < 0) {
             alienProjectileCombArr[1].splice(i, 1);
