@@ -182,8 +182,8 @@ document.onkeyup = function(e) {
     }
 };
 
-for (let i = 0; i< document.querySelectorAll(".yes").length; i++) {
-    document.querySelectorAll(".yes")[i].onclick = function() {
+for (let i = 0; i< document.querySelectorAll(".restard").length; i++) {
+    document.querySelectorAll(".restard")[i].onclick = function() {
         location.reload();
     }
 }
