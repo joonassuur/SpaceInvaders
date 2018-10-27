@@ -8,4 +8,28 @@ body {
     background: #ccc;
     margin: 0 auto;
     margin-top: 50px;
+    text-align: center;
+}
+
+.alertWindow {
+    display: none;
+    background: #fff;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 30%;
+    width: 200px;
+    height: 80px;
+    border: 1px solid #000;
+}
+.alertWindow p {
+    margin-bottom: 5px;
+}
+.alertWindow button {
+    border: 1px solid #000;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 10px;
+    background: #fff;
 }
