@@ -87,13 +87,14 @@ let Objects = {
             return;
         } else {
             for (let i = 0; i<alienProjectileCombArr[0].length;i++) {
-                let alien = alienProjectileCombArr[0];
-                let ranAlien = alien[Math.floor((Math.random() * alien.length) + 1)];
-                let x = ranAlien.x;
-                let y = ranAlien.y;
-                alienProjectileCombArr[2].push(new Objects.Projectile(x, y));
-                
-                break;
+                if(alienProjectileCombArr[0][i] != undefined) {
+                    let alien = alienProjectileCombArr[0];
+                    let ranAlien = alien[Math.floor((Math.random() * alien.length) + 0)];
+                    let x = ranAlien.x;
+                    let y = ranAlien.y;
+                    alienProjectileCombArr[2].push(new Objects.Projectile(x, y));
+                    break;
+                } 
             }
         }
         lastShot = now;
@@ -181,16 +182,23 @@ document.onkeyup = function(e) {
     }
 };
 
-document.querySelector(".yes").onclick = function() {
-    location.reload();
+for (let i = 0; i< document.querySelectorAll(".yes").length; i++) {
+    document.querySelectorAll(".yes")[i].onclick = function() {
+        location.reload();
+    }
 }
+
 
 // animations 
 function animate() {
     if(gotHit) {
-        document.querySelector(".alertWindow").style.display = "block"
+        document.querySelector(".alertLost").style.display = "block";
         return;
     } 
+    if (alienProjectileCombArr[0].length === 0) {
+        document.querySelector(".alertWin").style.display = "block";
+        return;
+    }
     requestAnimationFrame(animate);
     ctx.clearRect(0, 0, innerWidth, innerHeight);
 
