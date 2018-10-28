@@ -198,6 +198,7 @@ for (let i = 0; i< document.querySelectorAll(".restard").length; i++) {
 // alert windows on level complete
 document.querySelector(".continue").onclick = function() {
     level++;
+    alienProjectileCombArr[1].length = 0;
     document.querySelector(".alertWin").style.display = "none";
     populateRows();
 }
@@ -207,6 +208,7 @@ document.querySelector(".continue").onclick = function() {
 function animate() {
     // end game when player gets hit
     if(gotHit) {
+        document.querySelector(".loseText").textContent = "Game over. Your score: " + score;
         document.querySelector(".alertLost").style.display = "block";
         return;
     } 
@@ -223,7 +225,7 @@ function animate() {
 
     // end level when aliens are elminated
     if (alienProjectileCombArr[0].length === 0) {
-        document.querySelector(".winText").textContent = "Level " + level + " complete."
+        document.querySelector(".winText").textContent = "Level " + level + " complete.";
         document.querySelector(".alertWin").style.display = "block";
         return;
     }
