@@ -17,6 +17,7 @@ var pressedKey = {
     spacebar: false
 }
 let gotHit;
+let level = 1;
 
 let Objects = {
     // draw the player 
@@ -34,7 +35,7 @@ let Objects = {
                 playerPos-=5
             }
         } 
-        ctx.fillStyle = "#003399";
+        ctx.fillStyle = "#3399ff";
         ctx.beginPath();
         ctx.arc(playerPos,500,10,0,2*Math.PI);
         ctx.fill();
@@ -46,17 +47,17 @@ let Objects = {
 
         // player projectiles
         this.drawProjectile = function() {
-            ctx.fillStyle = "#ff0000";
+            ctx.fillStyle = "#ff1a1a";
             ctx.fillRect(this.x, this.y, 2, 6);
         }
         this.updateProjectile = function() {
-            this.y -= 6;
+            this.y -= 6 + level/5;
             this.drawProjectile();
         }
 
         // alien projectiles
         this.drawProjectileAlien = function() {
-            ctx.fillStyle = "#009900";
+            ctx.fillStyle = "#4dff4d";
             ctx.fillRect(this.x, this.y, 2, 6);
         }
         this.updateProjectileAlien = function() {
@@ -115,36 +116,42 @@ let Objects = {
         this.updateAlien = function() {
             this.y += this.dy;
             this.drawAlien();
+            if (this.y > projectileInitialPosY+10) {
+                gotHit = true;
+            }
         }
     },
     // keep score
     score: function() {
         ctx.font = "14px Arial";
-        ctx.fillStyle = "#000";
+        ctx.fillStyle = "#fff";
         ctx.fillText("Score: " + score,820,590);
     }
 
 
 }
 
-// add aliens to the array and draw aliens in rows
+function populateRows() {
+    // add aliens to the array and draw aliens in rows
+    // i = x cordinate
+    // row 1
+    for (let i = 120; i < c.offsetWidth-100; i += 50) {
+        alienProjectileCombArr[0].push(new Objects.Alien(i, -40, level/30, "#e6e600"));
+    }
+    // row 2
+    for (let i = 145; i < c.offsetWidth-125; i += 50) {
+        alienProjectileCombArr[0].push(new Objects.Alien(i, -15, level/30, "#e6e600"));
+    }
+    // row 3
+    for (let i = 120; i < c.offsetWidth-100; i += 50) {
+        alienProjectileCombArr[0].push(new Objects.Alien(i, 10, level/30, "#e6e600"));
+    }
+    // row 4
+    for (let i = 145; i < c.offsetWidth-125; i += 50) {
+        alienProjectileCombArr[0].push(new Objects.Alien(i, 35, level/30, "#e6e600"));
+    }
+}populateRows()
 
-// row 1
-for (let i = 20; i < c.offsetWidth-5; i += 50) {
-    alienProjectileCombArr[0].push(new Objects.Alien(i, -40, 0.1, "#000"));
-}
-// row 2
-for (let i = 45; i < c.offsetWidth-5; i += 50) {
-    alienProjectileCombArr[0].push(new Objects.Alien(i, -15, 0.1, "#000"));
-}
-// row 3
-for (let i = 20; i < c.offsetWidth-5; i += 50) {
-    alienProjectileCombArr[0].push(new Objects.Alien(i, 10, 0.1, "#000"));
-}
-// row 4
-for (let i = 45; i < c.offsetWidth-5; i += 50) {
-    alienProjectileCombArr[0].push(new Objects.Alien(i, 35, 0.1, "#000"));
-}
 
 // keypress events 
 document.onkeydown = function(e) {    
@@ -182,23 +189,29 @@ document.onkeyup = function(e) {
     }
 };
 
+// alert windows on game over
 for (let i = 0; i< document.querySelectorAll(".restard").length; i++) {
     document.querySelectorAll(".restard")[i].onclick = function() {
         location.reload();
     }
 }
+// alert windows on level complete
+document.querySelector(".continue").onclick = function() {
+    level++;
+    document.querySelector(".alertWin").style.display = "none";
+    populateRows();
+}
 
 
 // animations 
 function animate() {
+    // end game when player gets hit
     if(gotHit) {
         document.querySelector(".alertLost").style.display = "block";
         return;
     } 
-    if (alienProjectileCombArr[0].length === 0) {
-        document.querySelector(".alertWin").style.display = "block";
-        return;
-    }
+
+    // update canvas
     requestAnimationFrame(animate);
     ctx.clearRect(0, 0, innerWidth, innerHeight);
 
@@ -207,6 +220,13 @@ function animate() {
     Objects.shootProjectiles(); 
     Objects.score();
     Objects.aliensShoot();
+
+    // end level when aliens are elminated
+    if (alienProjectileCombArr[0].length === 0) {
+        document.querySelector(".winText").textContent = "Level " + level + " complete."
+        document.querySelector(".alertWin").style.display = "block";
+        return;
+    }
 
     // animate projectiles
     for (let i = 0; i<alienProjectileCombArr[1].length; i++) {
@@ -270,7 +290,7 @@ function animate() {
 
     // draw text in the bottom of the screen
     ctx.font = "14px Arial";
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = "#fff";
     ctx.fillText("Space: shoot",10,570);
     ctx.fillText("Arrow left and arrow right: move",10,590);
 
