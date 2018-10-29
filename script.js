@@ -1,6 +1,6 @@
 // initialize variables
-var c = document.querySelector("canvas");
 var wrapper = document.querySelector(".wrapper");
+var c = document.querySelector("canvas");
     c.height = wrapper.offsetHeight-5;
     c.width = wrapper.offsetWidth;
 var ctx = c.getContext("2d");
@@ -18,6 +18,7 @@ var pressedKey = {
 }
 let gotHit;
 let level = 1;
+let prevLevel = 0;
 
 let Objects = {
     // draw the player 
@@ -51,7 +52,11 @@ let Objects = {
             ctx.fillRect(this.x, this.y, 2, 6);
         }
         this.updateProjectile = function() {
-            this.y -= 6 + level/5;
+/*             let speed = level/5
+            if(level >= 5) {
+                speed = 1;
+            } */
+            this.y -= 6;
             this.drawProjectile();
         }
 
@@ -128,28 +133,31 @@ let Objects = {
         ctx.fillText("Score: " + score,820,590);
     }
 
-
 }
 
+let alienSpeed = 0.1;
 function populateRows() {
     // add aliens to the array and draw aliens in rows
     // i = x cordinate
+    // speed = the speed with which aliens move down
     // row 1
     for (let i = 120; i < c.offsetWidth-100; i += 50) {
-        alienProjectileCombArr[0].push(new Objects.Alien(i, -40, level/30, "#e6e600"));
+        alienProjectileCombArr[0].push(new Objects.Alien(i, -40, alienSpeed, "#e6e600"));
     }
     // row 2
     for (let i = 145; i < c.offsetWidth-125; i += 50) {
-        alienProjectileCombArr[0].push(new Objects.Alien(i, -15, level/30, "#e6e600"));
+        alienProjectileCombArr[0].push(new Objects.Alien(i, -15, alienSpeed, "#e6e600"));
     }
     // row 3
     for (let i = 120; i < c.offsetWidth-100; i += 50) {
-        alienProjectileCombArr[0].push(new Objects.Alien(i, 10, level/30, "#e6e600"));
+        alienProjectileCombArr[0].push(new Objects.Alien(i, 10, alienSpeed, "#e6e600"));
     }
     // row 4
     for (let i = 145; i < c.offsetWidth-125; i += 50) {
-        alienProjectileCombArr[0].push(new Objects.Alien(i, 35, level/30, "#e6e600"));
+        alienProjectileCombArr[0].push(new Objects.Alien(i, 35, alienSpeed, "#e6e600"));
     }
+    let x = alienSpeed/50;
+    alienSpeed += x;
 }populateRows()
 
 
@@ -189,13 +197,13 @@ document.onkeyup = function(e) {
     }
 };
 
-// alert windows on game over
+// restart button
 for (let i = 0; i< document.querySelectorAll(".restard").length; i++) {
     document.querySelectorAll(".restard")[i].onclick = function() {
         location.reload();
     }
 }
-// alert windows on level complete
+// continue button
 document.querySelector(".continue").onclick = function() {
     level++;
     alienProjectileCombArr[1].length = 0;
@@ -259,18 +267,19 @@ function animate() {
     for (let i = 0; i < alienProjectileCombArr[1].length;i++) {
         if(alienProjectileCombArr[1][i] != undefined) {
             for (let j = 0; j<alienProjectileCombArr[0].length;j++) {
-                let alienY = alienProjectileCombArr[0][j].y;
-                let alienX = alienProjectileCombArr[0][j].x;
-                let projectileY = alienProjectileCombArr[1][i].y;
-                let projectileX = alienProjectileCombArr[1][i].x;
-                if(Math.floor(alienY) >= Math.floor(projectileY - 10)) {
-                    if(Math.floor(alienX) <= Math.floor(projectileX + 13) && Math.floor(alienX) >= Math.floor(projectileX - 13) ) {
-                        alienProjectileCombArr[0].splice(j, 1);
-                        alienProjectileCombArr[1].splice(i, 1);
-                        score+=1;
-                    }  
+                if(alienProjectileCombArr[0][j] != undefined) {
+                    let alienY = alienProjectileCombArr[0][j].y;
+                    let alienX = alienProjectileCombArr[0][j].x;
+                    let projectileY = alienProjectileCombArr[1][i].y;
+                    let projectileX = alienProjectileCombArr[1][i].x;
+                    if(Math.floor(alienY) >= Math.floor(projectileY - 10)) {
+                        if(Math.floor(alienX) <= Math.floor(projectileX + 13) && Math.floor(alienX) >= Math.floor(projectileX - 13) ) {
+                            alienProjectileCombArr[0].splice(j, 1);
+                            alienProjectileCombArr[1].splice(i, 1);
+                            score+=1;
+                        }  
+                    }
                 }
-
             }
         }
     }
