@@ -267,7 +267,7 @@ function animate() {
     for (let i = 0; i < alienProjectileCombArr[1].length;i++) {
         if(alienProjectileCombArr[1][i] != undefined) {
             for (let j = 0; j<alienProjectileCombArr[0].length;j++) {
-                if(alienProjectileCombArr[0][j] != undefined) {
+                if(alienProjectileCombArr[0][j] != undefined && alienProjectileCombArr[1][i] != undefined) {
                     let alienY = alienProjectileCombArr[0][j].y;
                     let alienX = alienProjectileCombArr[0][j].x;
                     let projectileY = alienProjectileCombArr[1][i].y;
