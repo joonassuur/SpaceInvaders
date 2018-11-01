@@ -121,7 +121,7 @@ let Objects = {
         }
         this.updateAlien = function() {
             for (let i = 0; i < alienProjectileCombArr[0].length; i++) {
-                if(alienProjectileCombArr[0][i].x+5 >= c.width || alienProjectileCombArr[0][i].x-10 < 0) {
+                if(alienProjectileCombArr[0][i].x+10 >= c.width || alienProjectileCombArr[0][i].x-10 < 0) {
                     this.dx = -this.dx;
                     this.y += 20;
                 } 
@@ -146,7 +146,6 @@ let alienSpeedX = 0.3;
 function populateRows() {
     // add aliens to the array and draw aliens in rows
     // i = x cordinate
-    // speed = the speed with which aliens move
     // row 1
     for (let i = 120; i < c.offsetWidth-100; i += 50) {
         alienProjectileCombArr[0].push(new Objects.Alien(i, 10, alienSpeedX, alienSpeedY, "#e6e600"));
