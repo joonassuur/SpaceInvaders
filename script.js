@@ -106,10 +106,11 @@ let Objects = {
         lastShot = now;
     },
     // draw the aliens
-    Alien: function(x, y, dy, color) {
+    Alien: function(x, y, dx, dy, color) {
         this.x = x;
         this.y = y;
-        this.dy = dy;
+        this.dx = dx;
+        this.dy = dy; // currently not in use
         this.color = color;
     
         this.drawAlien = function() {
@@ -119,7 +120,13 @@ let Objects = {
             ctx.fill();
         }
         this.updateAlien = function() {
-            this.y += this.dy;
+            for (let i = 0; i < alienProjectileCombArr[0].length; i++) {
+                if(alienProjectileCombArr[0][i].x+5 >= c.width || alienProjectileCombArr[0][i].x-10 < 0) {
+                    this.dx = -this.dx;
+                    this.y += 20;
+                } 
+            }
+            this.x += this.dx;
             this.drawAlien();
             if (this.y > projectileInitialPosY+10) {
                 gotHit = true;
@@ -132,32 +139,34 @@ let Objects = {
         ctx.fillStyle = "#fff";
         ctx.fillText("Score: " + score,820,590);
     }
-
 }
 
-let alienSpeed = 0.1;
+let alienSpeedY = 0.06; // not in use currently
+let alienSpeedX = 0.3;
 function populateRows() {
     // add aliens to the array and draw aliens in rows
     // i = x cordinate
-    // speed = the speed with which aliens move down
+    // speed = the speed with which aliens move
     // row 1
     for (let i = 120; i < c.offsetWidth-100; i += 50) {
-        alienProjectileCombArr[0].push(new Objects.Alien(i, -40, alienSpeed, "#e6e600"));
+        alienProjectileCombArr[0].push(new Objects.Alien(i, 10, alienSpeedX, alienSpeedY, "#e6e600"));
     }
     // row 2
     for (let i = 145; i < c.offsetWidth-125; i += 50) {
-        alienProjectileCombArr[0].push(new Objects.Alien(i, -15, alienSpeed, "#e6e600"));
+        alienProjectileCombArr[0].push(new Objects.Alien(i, 35, alienSpeedX, alienSpeedY, "#e6e600"));
     }
     // row 3
     for (let i = 120; i < c.offsetWidth-100; i += 50) {
-        alienProjectileCombArr[0].push(new Objects.Alien(i, 10, alienSpeed, "#e6e600"));
+        alienProjectileCombArr[0].push(new Objects.Alien(i, 60, alienSpeedX, alienSpeedY, "#e6e600"));
     }
     // row 4
     for (let i = 145; i < c.offsetWidth-125; i += 50) {
-        alienProjectileCombArr[0].push(new Objects.Alien(i, 35, alienSpeed, "#e6e600"));
+        alienProjectileCombArr[0].push(new Objects.Alien(i, 85, alienSpeedX, alienSpeedY, "#e6e600"));
     }
-    let x = alienSpeed/50;
-    alienSpeed += x;
+    let y = alienSpeedY/10; // currently not in use
+    let x = alienSpeedX/10;
+    alienSpeedY += y;
+    alienSpeedX += x;
 }populateRows()
 
 
